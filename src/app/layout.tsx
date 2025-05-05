@@ -5,8 +5,8 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'University Journal',
-  description: 'Manage grades, students, and courses all in one place',
+  title: 'Університетський журнал',
+  description: 'Керуйте оцінками, студентами та курсами в одному місці',
 };
 
 export default function RootLayout({
@@ -15,7 +15,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="uk">
       <body className={inter.className}>
         <div className="min-h-screen bg-gray-100">
           {children}

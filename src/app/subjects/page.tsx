@@ -11,7 +11,7 @@ import { Navbar } from '@/components/Navbar';
 import type { Subject } from '@/types/database';
 
 const subjectSchema = z.object({
-  name: z.string().min(2, 'Subject name must be at least 2 characters'),
+  name: z.string().min(2, 'Назва предмету має містити щонайменше 2 символи'),
 });
 
 type SubjectFormData = z.infer<typeof subjectSchema>;
@@ -37,11 +37,11 @@ export default function Subjects() {
   async function fetchSubjects() {
     try {
       const response = await fetch('/api/subjects');
-      if (!response.ok) throw new Error('Failed to fetch subjects');
+      if (!response.ok) throw new Error('Не вдалося отримати предмети');
       const data = await response.json();
       setSubjects(data);
     } catch (error) {
-      console.error('Error fetching subjects:', error);
+      console.error('Помилка при отриманні предметів:', error);
     }
   }
 
@@ -58,30 +58,30 @@ export default function Subjects() {
         body: JSON.stringify(data),
       });
 
-      if (!response.ok) throw new Error('Failed to save subject');
+      if (!response.ok) throw new Error('Не вдалося зберегти предмет');
 
       setIsModalOpen(false);
       setEditingSubject(null);
       reset();
       fetchSubjects();
     } catch (error) {
-      console.error('Error saving subject:', error);
+      console.error('Помилка при збереженні предмету:', error);
     }
   }
 
   async function handleDelete(subject: Subject) {
-    if (!confirm('Are you sure you want to delete this subject?')) return;
+    if (!confirm('Ви впевнені, що хочете видалити цей предмет?')) return;
 
     try {
       const response = await fetch(`/api/subjects/${subject.id}`, {
         method: 'DELETE',
       });
 
-      if (!response.ok) throw new Error('Failed to delete subject');
+      if (!response.ok) throw new Error('Не вдалося видалити предмет');
 
       fetchSubjects();
     } catch (error) {
-      console.error('Error deleting subject:', error);
+      console.error('Помилка при видаленні предмету:', error);
     }
   }
 
@@ -100,21 +100,21 @@ export default function Subjects() {
   }
 
   const columns = [
-    { header: 'Subject Name', accessor: 'name' },
+    { header: 'Назва предмету', accessor: 'name' },
   ];
 
   return (
     <>
       <Navbar />
-      <div className="container mx-auto p-4 space-y-4">
-        <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold">Subjects</h1>
+      <div className="container p-4 mx-auto space-y-4">
+        <div className="flex items-center justify-between">
+          <h1 className="text-2xl font-bold">Предмети</h1>
           <button
             onClick={handleAdd}
-            className="bg-indigo-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-indigo-700"
+            className="flex items-center gap-2 px-4 py-2 text-white bg-indigo-600 rounded-lg hover:bg-indigo-700"
           >
             <Plus size={20} />
-            Add Subject
+            Додати предмет
           </button>
         </div>
 
@@ -132,17 +132,17 @@ export default function Subjects() {
             setEditingSubject(null);
             reset();
           }}
-          title={editingSubject ? 'Edit Subject' : 'Add Subject'}
+          title={editingSubject ? 'Редагувати предмет' : 'Додати предмет'}
         >
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Subject Name
+                Назва предмету
               </label>
               <input
                 type="text"
                 {...register('name')}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
               />
               {errors.name && (
                 <p className="mt-1 text-sm text-red-600">
@@ -161,13 +161,13 @@ export default function Subjects() {
                 }}
                 className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
               >
-                Cancel
+                Скасувати
               </button>
               <button
                 type="submit"
                 className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700"
               >
-                {editingSubject ? 'Update' : 'Create'}
+                {editingSubject ? 'Оновити' : 'Створити'}
               </button>
             </div>
           </form>

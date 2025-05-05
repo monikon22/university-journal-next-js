@@ -10,9 +10,9 @@ import type { Group } from '../types/database';
 
 const groupSchema = z.object({
   speciality_code: z.string()
-    .regex(/^\d{3}$/, 'Speciality code must be exactly 3 digits')
+    .regex(/^\d{3}$/, 'Код спеціальності повинен містити рівно 3 цифри')
     .transform(val => Number(val)),
-  speciality_name: z.string().min(2, 'Speciality name must be at least 2 characters'),
+  speciality_name: z.string().min(2, 'Назва спеціальності повинна містити щонайменше 2 символи'),
 });
 
 type GroupFormData = z.infer<typeof groupSchema>;
@@ -40,7 +40,7 @@ export function Groups() {
       const data = await query<Group[]>('SELECT * FROM `groups` ORDER BY speciality_name');
       setGroups(data);
     } catch (error) {
-      console.error('Error fetching groups:', error);
+      console.error('Помилка завантаження груп:', error);
     }
   }
 
@@ -63,12 +63,12 @@ export function Groups() {
       reset();
       fetchGroups();
     } catch (error) {
-      console.error('Error saving group:', error);
+      console.error('Помилка збереження групи:', error);
     }
   }
 
   async function handleDelete(group: Group) {
-    if (!confirm('Are you sure you want to delete this group?')) return;
+    if (!confirm('Ви впевнені, що хочете видалити цю групу?')) return;
 
     try {
       await query('DELETE FROM `groups` WHERE id = ?', [group.id]);
@@ -104,13 +104,13 @@ export function Groups() {
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Groups</h1>
+        <h1 className="text-2xl font-bold">Групи</h1>
         <button
           onClick={handleAdd}
           className="bg-indigo-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-indigo-700"
         >
           <Plus size={20} />
-          Add Group
+          Додати групу
         </button>
       </div>
 
@@ -128,12 +128,12 @@ export function Groups() {
           setEditingGroup(null);
           reset();
         }}
-        title={editingGroup ? 'Edit Group' : 'Add Group'}
+        title={editingGroup ? 'Редагувати групу' : 'Додати групу'}
       >
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Speciality Code
+              Код спеціальності
             </label>
             <input
               type="text"
@@ -150,7 +150,7 @@ export function Groups() {
 
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Speciality Name
+              Назва спеціальності
             </label>
             <input
               type="text"
@@ -174,13 +174,13 @@ export function Groups() {
               }}
               className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
             >
-              Cancel
+              Скасувати
             </button>
             <button
               type="submit"
               className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700"
             >
-              {editingGroup ? 'Update' : 'Create'}
+              {editingGroup ? 'Оновити' : 'Створити'}
             </button>
           </div>
         </form>

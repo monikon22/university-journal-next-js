@@ -9,9 +9,9 @@ import { supabase } from '../lib/supabase';
 import type { Student, Group } from '../types/database';
 
 const studentSchema = z.object({
-  first_name: z.string().min(2, 'First name must be at least 2 characters'),
-  last_name: z.string().min(2, 'Last name must be at least 2 characters'),
-  group_id: z.string().uuid('Please select a group'),
+  first_name: z.string().min(2, 'Ім\'я повинно містити щонайменше 2 символи'),
+  last_name: z.string().min(2, 'Прізвище повинно містити щонайменше 2 символи'),
+  group_id: z.string().uuid('Будь ласка, оберіть групу'),
 });
 
 type StudentFormData = z.infer<typeof studentSchema>;
@@ -46,7 +46,7 @@ export function Students() {
       .order('last_name');
     
     if (error) {
-      console.error('Error fetching students:', error);
+      console.error('Помилка завантаження студентів:', error);
       return;
     }
 
@@ -80,7 +80,7 @@ export function Students() {
     const { error } = await operation;
 
     if (error) {
-      console.error('Error saving student:', error);
+      console.error('Помилка збереження студента:', error);
       return;
     }
 
@@ -91,7 +91,7 @@ export function Students() {
   }
 
   async function handleDelete(student: Student) {
-    if (!confirm('Are you sure you want to delete this student?')) return;
+    if (!confirm('Ви впевнені, що хочете видалити цього студента?')) return;
 
     const { error } = await supabase
       .from('students')
@@ -133,14 +133,14 @@ export function Students() {
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Students</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold">Студенти</h1>
         <button
           onClick={handleAdd}
-          className="bg-indigo-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-indigo-700"
+          className="flex items-center gap-2 px-4 py-2 text-white bg-indigo-600 rounded-lg hover:bg-indigo-700"
         >
           <Plus size={20} />
-          Add Student
+          Додати студента
         </button>
       </div>
 
@@ -158,17 +158,17 @@ export function Students() {
           setEditingStudent(null);
           reset();
         }}
-        title={editingStudent ? 'Edit Student' : 'Add Student'}
+        title={editingStudent ? 'Редагувати студента' : 'Додати студента'}
       >
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              First Name
+              Ім'я
             </label>
             <input
               type="text"
               {...register('first_name')}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+              className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
             />
             {errors.first_name && (
               <p className="mt-1 text-sm text-red-600">
@@ -179,12 +179,12 @@ export function Students() {
 
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Last Name
+              Прізвище
             </label>
             <input
               type="text"
               {...register('last_name')}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+              className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
             />
             {errors.last_name && (
               <p className="mt-1 text-sm text-red-600">
@@ -195,13 +195,13 @@ export function Students() {
 
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Group
+              Група
             </label>
             <select
               {...register('group_id')}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+              className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
             >
-              <option value="">Select a group</option>
+              <option value="">Оберіть групу</option>
               {groups.map((group) => (
                 <option key={group.id} value={group.id}>
                   {group.speciality_name}
@@ -225,13 +225,13 @@ export function Students() {
               }}
               className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
             >
-              Cancel
+              Скасувати
             </button>
             <button
               type="submit"
               className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700"
             >
-              {editingStudent ? 'Update' : 'Create'}
+              {editingStudent ? 'Оновити' : 'Створити'}
             </button>
           </div>
         </form>

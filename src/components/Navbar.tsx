@@ -8,11 +8,11 @@ export function Navbar() {
   const pathname = usePathname();
 
   return (
-    <nav className="bg-indigo-600 text-white p-4">
-      <div className="container mx-auto flex items-center justify-between">
-        <Link href="/" className="text-2xl font-bold flex items-center gap-2">
+    <nav className="p-4 text-white bg-indigo-600">
+      <div className="container flex items-center justify-between mx-auto">
+        <Link href="/" className="flex items-center gap-2 text-2xl font-bold">
           <GraduationCap />
-          University Journal
+          Університетський журнал
         </Link>
         <div className="flex gap-4">
           <Link 
@@ -20,35 +20,35 @@ export function Navbar() {
             className={`flex items-center gap-1 hover:text-indigo-200 ${pathname === '/groups' ? 'text-indigo-200' : ''}`}
           >
             <FolderKanban size={20} />
-            Groups
+            Групи
           </Link>
           <Link 
             href="/students" 
             className={`flex items-center gap-1 hover:text-indigo-200 ${pathname === '/students' ? 'text-indigo-200' : ''}`}
           >
             <Users size={20} />
-            Students
+            Студенти
           </Link>
           <Link 
             href="/teachers" 
             className={`flex items-center gap-1 hover:text-indigo-200 ${pathname === '/teachers' ? 'text-indigo-200' : ''}`}
           >
             <GraduationCap size={20} />
-            Teachers
+            Викладачі
           </Link>
           <Link 
             href="/subjects" 
             className={`flex items-center gap-1 hover:text-indigo-200 ${pathname === '/subjects' ? 'text-indigo-200' : ''}`}
           >
             <BookOpen size={20} />
-            Subjects
+            Предмети
           </Link>
           <Link 
             href="/grades" 
             className={`flex items-center gap-1 hover:text-indigo-200 ${pathname === '/grades' ? 'text-indigo-200' : ''}`}
           >
             <GradeIcon size={20} />
-            Grades
+            Оцінки
           </Link>
         </div>
       </div>

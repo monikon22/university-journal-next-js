@@ -9,7 +9,7 @@ import { supabase } from '../lib/supabase';
 import type { Subject } from '../types/database';
 
 const subjectSchema = z.object({
-  name: z.string().min(2, 'Subject name must be at least 2 characters'),
+  name: z.string().min(2, 'Назва предмету повинна містити щонайменше 2 символи'),
 });
 
 type SubjectFormData = z.infer<typeof subjectSchema>;
@@ -39,7 +39,7 @@ export function Subjects() {
       .order('name');
     
     if (error) {
-      console.error('Error fetching subjects:', error);
+      console.error('Помилка завантаження предметів:', error);
       return;
     }
 
@@ -59,7 +59,7 @@ export function Subjects() {
     const { error } = await operation;
 
     if (error) {
-      console.error('Error saving subject:', error);
+      console.error('Помилка збереження предмету:', error);
       return;
     }
 
@@ -70,7 +70,7 @@ export function Subjects() {
   }
 
   async function handleDelete(subject: Subject) {
-    if (!confirm('Are you sure you want to delete this subject?')) return;
+    if (!confirm('Ви впевнені, що хочете видалити цей предмет?')) return;
 
     const { error } = await supabase
       .from('subjects')
@@ -106,13 +106,13 @@ export function Subjects() {
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Subjects</h1>
+        <h1 className="text-2xl font-bold">Предмети</h1>
         <button
           onClick={handleAdd}
           className="bg-indigo-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-indigo-700"
         >
           <Plus size={20} />
-          Add Subject
+          Додати предмет
         </button>
       </div>
 
@@ -130,12 +130,12 @@ export function Subjects() {
           setEditingSubject(null);
           reset();
         }}
-        title={editingSubject ? 'Edit Subject' : 'Add Subject'}
+        title={editingSubject ? 'Редагувати предмет' : 'Додати предмет'}
       >
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Subject Name
+              Назва предмету
             </label>
             <input
               type="text"
@@ -159,13 +159,13 @@ export function Subjects() {
               }}
               className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
             >
-              Cancel
+              Скасувати
             </button>
             <button
               type="submit"
               className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700"
             >
-              {editingSubject ? 'Update' : 'Create'}
+              {editingSubject ? 'Оновити' : 'Створити'}
             </button>
           </div>
         </form>

@@ -9,8 +9,8 @@ import { supabase } from '../lib/supabase';
 import type { Teacher } from '../types/database';
 
 const teacherSchema = z.object({
-  first_name: z.string().min(2, 'First name must be at least 2 characters'),
-  last_name: z.string().min(2, 'Last name must be at least 2 characters'),
+  first_name: z.string().min(2, 'Ім\'я повинно містити щонайменше 2 символи'),
+  last_name: z.string().min(2, 'Прізвище повинно містити щонайменше 2 символи'),
 });
 
 type TeacherFormData = z.infer<typeof teacherSchema>;
@@ -40,7 +40,7 @@ export function Teachers() {
       .order('last_name');
     
     if (error) {
-      console.error('Error fetching teachers:', error);
+      console.error('Помилка завантаження викладачів:', error);
       return;
     }
 
@@ -60,7 +60,7 @@ export function Teachers() {
     const { error } = await operation;
 
     if (error) {
-      console.error('Error saving teacher:', error);
+      console.error('Помилка збереження викладача:', error);
       return;
     }
 
@@ -71,7 +71,7 @@ export function Teachers() {
   }
 
   async function handleDelete(teacher: Teacher) {
-    if (!confirm('Are you sure you want to delete this teacher?')) return;
+    if (!confirm('Ви впевнені, що хочете видалити цього викладача?')) return;
 
     const { error } = await supabase
       .from('teachers')
@@ -109,13 +109,13 @@ export function Teachers() {
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Teachers</h1>
+        <h1 className="text-2xl font-bold">Викладачі</h1>
         <button
           onClick={handleAdd}
           className="bg-indigo-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-indigo-700"
         >
           <Plus size={20} />
-          Add Teacher
+          Додати викладача
         </button>
       </div>
 
@@ -133,12 +133,12 @@ export function Teachers() {
           setEditingTeacher(null);
           reset();
         }}
-        title={editingTeacher ? 'Edit Teacher' : 'Add Teacher'}
+        title={editingTeacher ? 'Редагувати викладача' : 'Додати викладача'}
       >
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              First Name
+              Ім'я
             </label>
             <input
               type="text"
@@ -154,7 +154,7 @@ export function Teachers() {
 
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Last Name
+              Прізвище
             </label>
             <input
               type="text"
@@ -178,13 +178,13 @@ export function Teachers() {
               }}
               className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
             >
-              Cancel
+              Скасувати
             </button>
             <button
               type="submit"
               className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700"
             >
-              {editingTeacher ? 'Update' : 'Create'}
+              {editingTeacher ? 'Оновити' : 'Створити'}
             </button>
           </div>
         </form>

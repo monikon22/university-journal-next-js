@@ -29,35 +29,35 @@ export function DataTable<T>({ data, columns, onEdit, onDelete, title }: DataTab
       <div className="flex justify-end gap-2">
         <button
           onClick={handleExportCSV}
-          className="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 flex items-center gap-2"
+          className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
         >
           <FileDown size={16} />
-          Export CSV
+          Експорт CSV
         </button>
         <button
           onClick={handleExportPDF}
-          className="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 flex items-center gap-2"
+          className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
         >
           <FileDown size={16} />
-          Export PDF
+          Експорт PDF
         </button>
       </div>
 
       <div className="overflow-x-auto">
-        <table className="min-w-full bg-white rounded-lg overflow-hidden">
+        <table className="min-w-full overflow-hidden bg-white rounded-lg">
           <thead className="bg-gray-50">
             <tr>
               {columns.map((column, index) => (
                 <th
                   key={index}
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
                 >
                   {column.header}
                 </th>
               ))}
               {(onEdit || onDelete) && (
-                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Actions
+                <th className="px-6 py-3 text-xs font-medium tracking-wider text-right text-gray-500 uppercase">
+                  Дії
                 </th>
               )}
             </tr>
@@ -66,18 +66,18 @@ export function DataTable<T>({ data, columns, onEdit, onDelete, title }: DataTab
             {data.map((item, rowIndex) => (
               <tr key={rowIndex} className="hover:bg-gray-50">
                 {columns.map((column, colIndex) => (
-                  <td key={colIndex} className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <td key={colIndex} className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
                     {typeof column.accessor === 'function'
                       ? column.accessor(item)
                       : (item[column.accessor] as React.ReactNode)}
                   </td>
                 ))}
                 {(onEdit || onDelete) && (
-                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
                     {onEdit && (
                       <button
                         onClick={() => onEdit(item)}
-                        className="text-indigo-600 hover:text-indigo-900 mr-3"
+                        className="mr-3 text-indigo-600 hover:text-indigo-900"
                       >
                         <Pencil size={16} />
                       </button>

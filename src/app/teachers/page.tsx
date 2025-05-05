@@ -11,8 +11,8 @@ import { Navbar } from '@/components/Navbar';
 import type { Teacher } from '@/types/database';
 
 const teacherSchema = z.object({
-  first_name: z.string().min(2, 'First name must be at least 2 characters'),
-  last_name: z.string().min(2, 'Last name must be at least 2 characters'),
+  first_name: z.string().min(2, 'Ім’я повинно містити щонайменше 2 символи'),
+  last_name: z.string().min(2, 'Прізвище повинно містити щонайменше 2 символи'),
 });
 
 type TeacherFormData = z.infer<typeof teacherSchema>;
@@ -38,11 +38,11 @@ export default function Teachers() {
   async function fetchTeachers() {
     try {
       const response = await fetch('/api/teachers');
-      if (!response.ok) throw new Error('Failed to fetch teachers');
+      if (!response.ok) throw new Error('Не вдалося отримати список викладачів');
       const data = await response.json();
       setTeachers(data);
     } catch (error) {
-      console.error('Error fetching teachers:', error);
+      console.error('Помилка при отриманні викладачів:', error);
     }
   }
 
@@ -59,30 +59,30 @@ export default function Teachers() {
         body: JSON.stringify(data),
       });
 
-      if (!response.ok) throw new Error('Failed to save teacher');
+      if (!response.ok) throw new Error('Не вдалося зберегти викладача');
 
       setIsModalOpen(false);
       setEditingTeacher(null);
       reset();
       fetchTeachers();
     } catch (error) {
-      console.error('Error saving teacher:', error);
+      console.error('Помилка при збереженні викладача:', error);
     }
   }
 
   async function handleDelete(teacher: Teacher) {
-    if (!confirm('Are you sure you want to delete this teacher?')) return;
+    if (!confirm('Ви впевнені, що хочете видалити цього викладача?')) return;
 
     try {
       const response = await fetch(`/api/teachers/${teacher.id}`, {
         method: 'DELETE',
       });
 
-      if (!response.ok) throw new Error('Failed to delete teacher');
+      if (!response.ok) throw new Error('Не вдалося видалити викладача');
 
       fetchTeachers();
     } catch (error) {
-      console.error('Error deleting teacher:', error);
+      console.error('Помилка при видаленні викладача:', error);
     }
   }
 
@@ -102,22 +102,22 @@ export default function Teachers() {
   }
 
   const columns = [
-    { header: 'Last Name', accessor: 'last_name' },
-    { header: 'First Name', accessor: 'first_name' },
+    { header: 'Прізвище', accessor: 'last_name' },
+    { header: 'Ім’я', accessor: 'first_name' },
   ];
 
   return (
     <>
       <Navbar />
-      <div className="container mx-auto p-4 space-y-4">
-        <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold">Teachers</h1>
+      <div className="container p-4 mx-auto space-y-4">
+        <div className="flex items-center justify-between">
+          <h1 className="text-2xl font-bold">Викладачі</h1>
           <button
             onClick={handleAdd}
-            className="bg-indigo-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-indigo-700"
+            className="flex items-center gap-2 px-4 py-2 text-white bg-indigo-600 rounded-lg hover:bg-indigo-700"
           >
             <Plus size={20} />
-            Add Teacher
+            Додати викладача
           </button>
         </div>
 
@@ -135,17 +135,17 @@ export default function Teachers() {
             setEditingTeacher(null);
             reset();
           }}
-          title={editingTeacher ? 'Edit Teacher' : 'Add Teacher'}
+          title={editingTeacher ? 'Редагувати викладача' : 'Додати викладача'}
         >
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                First Name
+                Ім’я
               </label>
               <input
                 type="text"
                 {...register('first_name')}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
               />
               {errors.first_name && (
                 <p className="mt-1 text-sm text-red-600">
@@ -156,12 +156,12 @@ export default function Teachers() {
 
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Last Name
+                Прізвище
               </label>
               <input
                 type="text"
                 {...register('last_name')}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
               />
               {errors.last_name && (
                 <p className="mt-1 text-sm text-red-600">
@@ -180,13 +180,13 @@ export default function Teachers() {
                 }}
                 className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
               >
-                Cancel
+                Скасувати
               </button>
               <button
                 type="submit"
                 className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700"
               >
-                {editingTeacher ? 'Update' : 'Create'}
+                {editingTeacher ? 'Оновити' : 'Створити'}
               </button>
             </div>
           </form>

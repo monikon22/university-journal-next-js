@@ -12,9 +12,9 @@ import type { Group } from '@/types/database';
 
 const groupSchema = z.object({
   speciality_code: z.string()
-    .regex(/^\d{3}$/, 'Speciality code must be exactly 3 digits')
+    .regex(/^\d{3}$/, 'Код спеціальності має складатися рівно з 3 цифр')
     .transform(val => Number(val)),
-  speciality_name: z.string().min(2, 'Speciality name must be at least 2 characters'),
+  speciality_name: z.string().min(2, 'Назва спеціальності має містити щонайменше 2 символи'),
 });
 
 type GroupFormData = z.infer<typeof groupSchema>;
@@ -40,7 +40,7 @@ export default function Groups() {
   async function fetchGroups() {
     try {
       const response = await fetch('/api/groups');
-      if (!response.ok) throw new Error('Failed to fetch groups');
+      if (!response.ok) throw new Error('Не вдалося отримати групи');
       const data = await response.json();
       setGroups(data);
     } catch (error) {
@@ -61,7 +61,7 @@ export default function Groups() {
         body: JSON.stringify(data),
       });
 
-      if (!response.ok) throw new Error('Failed to save group');
+      if (!response.ok) throw new Error('Не вдалося зберегти групу');
 
       setIsModalOpen(false);
       setEditingGroup(null);
@@ -73,14 +73,14 @@ export default function Groups() {
   }
 
   async function handleDelete(group: Group) {
-    if (!confirm('Are you sure you want to delete this group?')) return;
+    if (!confirm('Ви впевнені, що хочете видалити цю групу?')) return;
 
     try {
       const response = await fetch(`/api/groups/${group.id}`, {
         method: 'DELETE',
       });
 
-      if (!response.ok) throw new Error('Failed to delete group');
+      if (!response.ok) throw new Error('Не вдалося видалити групу');
 
       fetchGroups();
     } catch (error) {
@@ -105,24 +105,24 @@ export default function Groups() {
 
   const columns = [
     {
-      header: 'Speciality Code',
+      header: 'Код спеціальності',
       accessor: (group: Group) => group.speciality_code.toString().padStart(3, '0'),
     },
-    { header: 'Speciality Name', accessor: 'speciality_name' },
+    { header: 'Назва спеціальності', accessor: 'speciality_name' },
   ];
 
   return (
     <>
       <Navbar />
-      <div className="container mx-auto p-4 space-y-4">
-        <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold">Groups</h1>
+      <div className="container p-4 mx-auto space-y-4">
+        <div className="flex items-center justify-between">
+          <h1 className="text-2xl font-bold">Групи</h1>
           <button
             onClick={handleAdd}
-            className="bg-indigo-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-indigo-700"
+            className="flex items-center gap-2 px-4 py-2 text-white bg-indigo-600 rounded-lg hover:bg-indigo-700"
           >
             <Plus size={20} />
-            Add Group
+            Додати групу
           </button>
         </div>
 
@@ -131,7 +131,7 @@ export default function Groups() {
           columns={columns}
           onEdit={handleEdit}
           onDelete={handleDelete}
-          title="Groups"
+          title="Групи"
         />
 
         <Modal
@@ -141,18 +141,18 @@ export default function Groups() {
             setEditingGroup(null);
             reset();
           }}
-          title={editingGroup ? 'Edit Group' : 'Add Group'}
+          title={editingGroup ? 'Редагувати групу' : 'Додати групу'}
         >
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Speciality Code
+                Код спеціальності
               </label>
               <input
                 type="text"
                 {...register('speciality_code')}
                 placeholder="123"
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
               />
               {errors.speciality_code && (
                 <p className="mt-1 text-sm text-red-600">
@@ -163,12 +163,12 @@ export default function Groups() {
 
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Speciality Name
+                Назва спеціальності
               </label>
               <input
                 type="text"
                 {...register('speciality_name')}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
               />
               {errors.speciality_name && (
                 <p className="mt-1 text-sm text-red-600">
@@ -187,13 +187,13 @@ export default function Groups() {
                 }}
                 className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
               >
-                Cancel
+                Скасувати
               </button>
               <button
                 type="submit"
                 className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700"
               >
-                {editingGroup ? 'Update' : 'Create'}
+                {editingGroup ? 'Оновити' : 'Створити'}
               </button>
             </div>
           </form>
